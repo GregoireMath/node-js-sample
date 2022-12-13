@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    environment:
+      IMAGE_NAME: gregoiremathian/node-js
     docker:
       - image: circleci/node:10
     steps:
@@ -8,7 +10,12 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Docker image
-          command: docker build -t my_image .
+          command: docker build -t $IMAGE_NAME:latest .
       - run:
           name: Testing docker image
-          command: docker run --rm -d --name=test -p 8080:8080 my_image && docker ps --last=1 && docker stop test
+          command: docker run --rm -d --name=test -p 8080:8080 $IMAGE_NAME:latest && docker ps --last=1 && docker stop test
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PWD" | docker login --username "$DOCKERHUB_USER" --password-stdin
+            docker push $IMAGE_NAME:latest

@@ -3,8 +3,8 @@ jobs:
   build:
     environment:
       IMAGE_NAME: gregoiremathian/node-js
-    docker:
-      - image: circleci/node:10
+    machine:
+      - image: ubuntu-2004:202010-01
     steps:
       - checkout
       - setup_remote_docker

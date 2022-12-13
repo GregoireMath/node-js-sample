@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:alpine
+      - image: circleci/node:10 #à_modifier
     steps:
       - checkout
       - setup_remote_docker
